@@ -58,10 +58,7 @@ class Sampler(Instrument):
             sample(AMBI_GLASS_HUM)
 
         elif number == 4:
-            sample(AMBI_LUNAR_LAND)
-
-        elif number == 5:
-            sample(AMBI_SWOOSH)
+            sample(AMBI_LUNAR_LAND, amp=3)
 
 class Bass(Instrument):
 
@@ -77,16 +74,13 @@ class Bass(Instrument):
             sample(BASS_DROP_C)
 
         elif number == 2:
-            sample(BASS_HARD_C)
+            sample(BASS_HARD_C, amp=1)
 
         elif number == 3:
-            sample(BASS_HIT_C)
+            sample(BASS_HIT_C, amp=8)
 
         elif number == 4:
-            sample(BASS_THICK_C)
-
-        elif number == 5:
-            sample(BASS_VOXY_C)
+            sample(BASS_THICK_C, amp=4)
 
 
 class Piano(Instrument):
@@ -96,36 +90,26 @@ class Piano(Instrument):
         self.sc = scale(C3, MAJOR)
         self.num = NUM_PIANO
 
-    def loop_instrument(self, number):
+    def play(self, number):
 
         use_synth(PIANO)
 
-        # plays the scale up
+
         if number == 0:
-            play_pattern_timed(self.sc, 0.343857, release = 0.1)
+            play(C5, amp=1)
 
-        # plays a I-V-vi-VI chord progression
         elif number == 1:
-            play(chord(self.sc[0], MAJOR))
-            sleep(.6)
-            play(chord(self.sc[5], MINOR))
-            sleep(.6)
-            play(chord(self.sc[3], MAJOR))
-            sleep(.6)
-            play(chord(self.sc[4], MAJOR))
-            sleep(.6)
+            play(G7, amp=1)
 
-        # plays an major arpeggio
         elif number == 2:
-            play_pattern_timed(chord(self.sc[0], MAJOR), 0.2)
+            play(E1, amp=4)
 
-        # a differnt arpeggio
         elif number == 3:
-            play_pattern_timed(chord(self.sc[4], MAJOR), 0.2)
+            play(F4, amp=1)
 
-        # plays a minor arpeggio
         elif number == 4:
-            play_pattern_timed(chord(self.sc[5], MINOR), 0.6)
+            play(A3, amp=1)
+
 
 class BellSynth(Piano):
 

@@ -3,43 +3,36 @@ import platform
 from psonic import *
 from threading import Thread, Condition, Event
 
-RIGHT = b'RIGHT\r\n'
-LEFT = b'LEFT\r\n'
-UP = b'UP\r\n'
-DOWN = b'DOWN\r\n'
+PIANO_MODE = '0'
+SAMPLER_MODE = '1'
+BASS_MODE = '2'
 
-joystick_cmds = {RIGHT, LEFT, UP, DOWN}
+ZERO = '-1'
 
-BUTTON_PRESSED = b'-1\r\n'
-
-DRUM_MODE = b'0\r\n'
-PIANO_MODE = b'1\r\n'
-BELLS_MODE = b'2\r\n'
-SAMPLER_MODE = b'3\r\n'
-BASS_MODE = b'4\r\n'
-
-change_mode_cmds = {DRUM_MODE, PIANO_MODE, BELLS_MODE, SAMPLER_MODE, BASS_MODE}
+change_mode_cmds = {'0', '1', '2'}
 
 # data we'll pass on to the program
-data = None
-addr = None
 # info/setup for connecting to the ESP32
-UDP_IP = "192.168.1.2"
-UDP_PORT = 57222
-sock = socket.socket(socket.AF_INET, # Internet
-                          socket.SOCK_DGRAM)  # UDP
-sock.bind((UDP_IP, UDP_PORT))
-
-class readUDP(Thread):
-    def __init__(self):
-        Thread.__init__(self)
-        self.daemon = True
-        self.start()
-
-    def run(self):
-        while True:
-            data, addr = self.sock.recvfrom(1024) # buffer size is 1024 bytes
-
+# UDP_IP = "192.168.1.2"
+# UDP_PORT = 57222
+# sock = socket.socket(socket.AF_INET, # Internet
+#                           socket.SOCK_DGRAM)  # UDP
+# sock.bind((UDP_IP, UDP_PORT))
+#
+# class readUDP(Thread):
+#     def __init__(self):
+#         Thread.__init__(self)
+#         self.running = True
+#         self.data = None;
+#         self.addr = None;
+#         self.start()
+#
+#     def run(self):
+#         while self.running:
+#             self.data, self.addr = sock.recvfrom(1024) # buffer size is 1024 bytes
+#
+#     def stop(self):
+#         self.running = False
 # # grab the correct serial port for Mac or Linux
 # if platform.system() == 'Darwin':
 #     ser = serial.Serial('/dev/cu.SLAB_USBtoUART', 9600)

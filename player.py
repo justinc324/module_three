@@ -10,134 +10,89 @@ bass = Bass()
 sampler = Sampler()
 modes = ["DRUMS_MODE", "PIANO_MODE", "BELLS_MODE", "SAMPLER_MODE", "BASS_MODE"]
 
-curr_mode = modes[0]
+curr_mode = modes[1]
+
+samples = {'-2', '-3', '-4',
+			'-5', '-6'}
 
 # start listening to server
-readUDP()
+UDP_IP = "192.168.1.2"
+UDP_PORT = 57222
+
+sock = socket.socket(socket.AF_INET, # Internet
+                    socket.SOCK_DGRAM) # UDP
+sock.bind((UDP_IP, UDP_PORT))
 
 while True:
-	command = data
+	command, addr = sock.recvfrom(1024)
+
+	command = command.decode('utf-8')
+
+	if command == "-1":
+		print("SHIt")
 
 	if command:
 
 		if command in change_mode_cmds:
 
-			# switch to drums mode
-			if command == DRUM_MODE:
-				curr_mode = modes[0]
-				i = 0
+			print("shit")
 
-			elif command == PIANO_MODE:
+			if command == PIANO_MODE:
 				curr_mode = modes[1]
-				i = 0
-
-			elif command == BELLS_MODE:
-				curr_mode = modes[2]
-				i = 0
 
 			elif command == SAMPLER_MODE:
 				curr_mode = modes[3]
-				i = 0
 
 			elif command == BASS_MODE:
 				curr_mode = modes[4]
-				i = 0
 
 			print(curr_mode)
 
-		if curr_mode is "DRUMS_MODE":
-			if command == BUTTON_PRESSED:
+		elif command in samples:
+			if command == b'-2\r\n':
+				i = 0
 
-				if drum.is_looping:
-					drum.stop_loop()
-					print("Stop")
-				else:
-					drum.start_loop(i)
-					print("start")
-				ser.flushInput()
+			elif command == b'-3\r\n':
+				i = 1
 
-			# switch between drum samples
-			elif command == RIGHT:
-				i = (i + 1) % drum.num
-				print(i)
-			elif command == LEFT:
-				if i == 0:
-					i = drum.num - 1
-				else: i -= 1
-				print(i)
+			elif command == b'-4\r\n':
+				i = 2
 
-		elif curr_mode is "PIANO_MODE":
-			if command == BUTTON_PRESSED:
+			elif command == b'-5\r\n':
+				i = 3
 
-				if piano.is_looping:
-					piano.stop_loop()
-					print("Stop")
-				else:
-					piano.start_loop(i)
-					print("start")
-				ser.flushInput()
+			elif command == b'-6\r\n':
+				i = 4
 
-			# switch between piano samples
-			elif command == RIGHT:
-				i = (i + 1) % piano.num
-				print(i)
-			elif command == LEFT:
-				if i == 0:
-					i = piano.num - 1
-				else: i -= 1
-				print(i)
+			if curr_mode is "PIANO_MODE":
 
-		elif curr_mode is "BELLS_MODE":
-			if command == BUTTON_PRESSED:
+				piano.play(i)
+				print("piano start")
 
-				if bells.is_looping:
-					bells.stop_loop()
-					print("Stop")
-				else:
-					bells.start_loop(i)
-					print("start")
-				ser.flushInput()
-
-			# switch between bell notes
-			elif command == RIGHT:
-				i = (i + 1) % bells.num
-				print(i)
-			elif command == LEFT:
-				if i == 0:
-					i = bells.num - 1
-				else: i -= 1
-				print(i)
-
-		elif curr_mode is "SAMPLER_MODE":
-			if command == BUTTON_PRESSED:
+			elif curr_mode is "SAMPLER_MODE":
 
 				sampler.play(i)
 				print("sampler play")
-				ser.flushInput()
 
-			# switch between piano notes
-			elif command == RIGHT:
-				i = (i + 1) % sampler.num
-				print(i)
-			elif command == LEFT:
-				if i == 0:
-					i = sampler.num - 1
-				else: i -= 1
-				print(i)
-
-		elif curr_mode is "BASS_MODE":
-			if command == BUTTON_PRESSED:
-
+			elif curr_mode is "BASS_MODE":
 				bass.play(i)
 				print("bass play")
-				ser.flushInput()
 
-			# switch between piano notes
-			elif command == RIGHT:
-				i = (i + 1) % bass.num
-				print(i)
-			elif command == LEFT:
-				if i == 0:
-					i = bass.num - 1
-				else: i -= 1
-				print(i)
+		elif command == ZERO:
+
+			if curr_mode is "PIANO_MODE":
+
+				piano.stop_loop()
+				piano.is_looping = False
+				print("piano stop")
+
+			elif curr_mode is "SAMPLER_MODE":
+
+				sampler.stop_loop()
+				sampler.is_looping = False
+				print("sampler stop")
+
+			elif curr_mode is "BASS_MODE":
+				bass.stop_loop()
+				bass.is_looping = False
+				print("bass stop")
