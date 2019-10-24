@@ -57,6 +57,9 @@ An awesome tool that lets us communicate with Sonic-Pi via Python. [Download it 
 - After powering the ESP32, connect to its WiFi network. Example credentials given, but feel free to modify the name/password in the Arduino sketch.
   - Network: `ESP32_jcong`
   - Password: `spookyseason`
+  
+Enjoy!
+![Mysterious.](IMG_1287.jpg)
 - Launch `Sonic-Pi` on whatever machine you intend to use with the Mystery Music Box
 - Navigate to this repository on the command line and enter `python3 player.py`
 - Enjoy the mystery!
